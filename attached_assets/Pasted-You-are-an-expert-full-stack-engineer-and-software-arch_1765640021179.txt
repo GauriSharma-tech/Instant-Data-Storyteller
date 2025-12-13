@@ -1,0 +1,331 @@
+You are an expert full‑stack engineer and software architect.  
+Build a complete production‑ready web application called **Instant Data Storyteller**.
+
+After generating all files, **zip the entire project** and provide the ZIP file for download.
+
+===========================================================
+                🔵 PRODUCT PURPOSE
+===========================================================
+
+The app allows a user to:
+1. Upload a CSV
+2. Choose an “Intent Mode” (Student / Business / Research)
+3. Automatically generate a complete EDA-based data story with charts
+4. Switch detail modes (Quick Story / Analyst Mode / Text Only)
+5. View charts + insight explanations (“What it shows” + “Why it matters”)
+6. Save reports tied to a logged‑in user
+7. Reopen previous reports anytime
+8. Export report as PDF or HTML
+9. Store files and charts locally
+
+This is NOT a notebook — it is a **data storytelling tool with memory**.
+
+===========================================================
+                🔵 TECH STACK
+===========================================================
+
+Frontend: React + Vite + TailwindCSS  
+State: Context API  
+Backend: FastAPI  
+Database: SQLite (SQLAlchemy ORM)  
+Auth: JWT (access + refresh)  
+EDA: pandas + seaborn + matplotlib  
+Export: PDF (report generation), HTML  
+Storage: Local filesystem  
+Communication: JSON REST API using Axios  
+
+===========================================================
+                🔵 AUTHENTICATION (CRITICAL)
+===========================================================
+
+Create **full login + signup system**.
+
+BUT signup is restricted only to these demo users:
+- gauri
+- kritika
+- user1
+- user2
+- user3
+
+Signup rules:
+- If username NOT in demo list ➝ reject with 403
+- If in demo list ➝ allow signup
+- Password must be hashed
+- Store users in SQLite
+
+JWT Rules:
+- Login returns access token
+- Protected routes require Bearer token
+- Refresh token optional but recommended
+
+===========================================================
+                🔵 TWO MODE SYSTEM (CRITICAL)
+===========================================================
+
+There are **TWO different categories of modes**, and they must not be mixed.
+
+-----------------------------------------------------------
+⭐ 1. INTENT MODE (WHY user needs the report)
+-----------------------------------------------------------
+
+Selected **right after CSV upload**, before analysis begins.
+
+Options:
+- Student
+- Business
+- Research
+
+Controls:
+- Tone of writing
+- Explanation complexity
+- Vocabulary
+- Recommendation style
+- Conclusion writing style
+
+User **cannot change intent mode** after report creation.
+
+-----------------------------------------------------------
+⭐ 2. DETAIL MODE (HOW MUCH detail to show)
+-----------------------------------------------------------
+
+This appears in the Workspace as a dropdown.
+
+Options:
+- Quick Story → 3–4 charts, simple summary
+- Analyst Mode → Full EDA, 7–10 charts, stats, correlations
+- Text Only → Only insights, NO charts
+
+User can switch detail mode **anytime**.  
+Report rerenders automatically based on mode.
+
+===========================================================
+                🔵 UI FLOW (IMPORTANT)
+===========================================================
+
+-----------------------------------------------------------
+🟦 1. Landing Page
+-----------------------------------------------------------
+- App title, short description
+- Buttons:
+  ➕ Create New Report
+  📂 My Reports
+
+-----------------------------------------------------------
+🟦 2. Create New Report (Wizard)
+-----------------------------------------------------------
+
+Step 1 — Upload CSV  
+Backend returns:
+- Column names
+- Dtypes
+- Shape
+- Sample rows
+
+Step 2 — Choose Intent Mode  
+3 cards: Student / Business / Research  
+Button: “Generate Story”
+
+-----------------------------------------------------------
+🟦 3. Main Workspace (Core UI)
+-----------------------------------------------------------
+
+Left Sidebar:
+- Overview  
+- Visual Insights  
+- Key Findings  
+- Data Warnings  
+- Conclusion  
+- Export  
+
+Top Bar:
+- DETAIL MODE dropdown
+
+Main Panel Displays:
+- Dataset summary
+- Charts
+- Explanations:
+  “What this shows”
+  “Why this matters”
+- Key insights
+- Conclusion (depends on Intent Mode)
+
+-----------------------------------------------------------
+🟦 4. My Reports Dashboard
+-----------------------------------------------------------
+
+Each saved report card shows:
+- Name
+- Created At
+- Last Edited
+- Buttons: Open / Duplicate / Export PDF
+
+===========================================================
+                🔵 EDA + CHART SELECTION LOGIC
+===========================================================
+
+Charts MUST NOT be random.  
+They must depend on data type:
+
+----------- DISTRIBUTIONS -----------
+- histplot
+- kdeplot
+- ecdfplot
+- displot
+
+----------- CATEGORICAL -----------
+- countplot
+- barplot
+- boxplot
+- violinplot
+- stripplot
+- swarmplot
+- boxenplot
+
+----------- RELATIONAL -----------
+- scatterplot
+- lineplot
+- relplot
+
+----------- REGRESSION -----------
+- regplot
+- lmplot
+
+----------- MATRIX -----------
+- heatmap
+- cluster map
+
+----------- FIGURE-LEVEL -----------
+- pairplot (max 4 numeric cols)
+- jointplot (strongest pair)
+
+Rules:
+- Only meaningful charts should appear
+- Each chart must include:
+  → **Chart image**
+  → **What this shows**
+  → **Why this matters**
+- Quick Story mode limits charts to 3–4
+- Analyst Mode allows 7–10
+
+===========================================================
+                🔵 REPORT STRUCTURE
+===========================================================
+
+Always in this fixed order:
+1. Dataset Overview  
+2. Data Quality  
+3. Distributions  
+4. Relationships  
+5. Category-Level Analysis  
+6. Correlations  
+7. Conclusion (depends on Intent Mode)
+
+===========================================================
+                🔵 STORAGE LAYOUT
+===========================================================
+
+For each report, store under:
+
+/user_data/{user_id}/reports/{report_id}/
+    original.csv
+    charts/
+    insights.json
+    settings.json  (stores intent mode + last selected detail mode)
+    report.html
+    report.pdf
+
+===========================================================
+                🔵 EXPORT
+===========================================================
+
+Export options:
+- PDF (full report)
+- HTML
+- Saved draft in dashboard
+
+PDF must include:
+- Title
+- Intent Mode label
+- Dataset summary
+- Charts with captions
+- Insights
+- Conclusion
+
+===========================================================
+                🔵 BACKEND REQUIREMENTS
+===========================================================
+
+Create FastAPI app with:
+- main.py
+- models.py
+- database.py
+- routers/
+      auth.py
+      upload.py
+      eda.py
+      reports.py
+- utils/
+      jwt.py
+      auth.py
+      charts.py
+      pdf_generator.py
+
+Serve static files for charts.
+
+===========================================================
+                🔵 FRONTEND REQUIREMENTS
+===========================================================
+
+React project must include:
+- Tailwind setup
+- AuthContext for JWT
+- Protected routes
+- Pages:
+  Landing
+  Login
+  Signup
+  Upload
+  IntentModeSelect
+  Workspace
+  MyReports
+- Components:
+  Sidebar
+  TopBar
+  ChartCard
+  ReportSection
+- Axios API service wrapper
+
+UI must be clean, modern, and aesthetic.
+
+===========================================================
+                🔵 FINAL DELIVERABLES
+===========================================================
+
+You MUST deliver:
+
+✔ Full backend code  
+✔ Full frontend code  
+✔ Full folder structure  
+✔ All API endpoints  
+✔ JWT authentication  
+✔ CSV upload  
+✔ EDA pipeline  
+✔ Chart generation  
+✔ Intent Mode logic  
+✔ Detail Mode logic  
+✔ Report storage  
+✔ Dashboard  
+✔ PDF export  
+✔ Frontend integration  
+✔ Tailwind UI  
+✔ Running instructions  
+✔ **ZIP file containing the FULL project**  
+
+DO NOT SKIP ANY FILE.
+
+===========================================================
+               🚀 NOW GENERATE THE ENTIRE PROJECT
+===========================================================
+
+Generate all files + code exactly as a real-world production app.  
+Then zip the entire folder and provide the ZIP.
