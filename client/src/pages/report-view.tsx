@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,11 +33,25 @@ export default function ReportView() {
   const [match, params] = useRoute("/report/:id");
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Determine Intent and Data based on Report ID
+  // Helper to get custom reports from local storage
+  const getCustomReport = (id: string) => {
+    try {
+      const saved = localStorage.getItem("custom_reports");
+      if (saved) {
+        const reports = JSON.parse(saved);
+        return reports.find((r: any) => r.id === id);
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  };
+
   const reportId = params?.id;
-  const report = MOCK_REPORTS.find(r => r.id === reportId);
+  // Check mock reports first, then custom
+  const report = MOCK_REPORTS.find(r => r.id === reportId) || getCustomReport(reportId);
   
-  // Get the specific data for this report, or fallback
+  // Get specific data or fallback to generic
   const reportData = (reportId && REPORT_DATA[reportId]) ? REPORT_DATA[reportId] : DEFAULT_REPORT_DATA;
   
   const currentIntentKey = (report?.intent || "BUSINESS") as IntentMode;

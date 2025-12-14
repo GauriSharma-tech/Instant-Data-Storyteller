@@ -249,6 +249,68 @@ const DATA_HOUSING = {
   conclusion: "The housing market data indicates a strong segmentation by zone. While size is the primary predictor of value, location (Neighborhood) acts as a significant multiplier, especially in the Downtown sector."
 };
 
+export const DATA_GENERIC = {
+  summary: {
+    rows: 1500,
+    columns: 10,
+    col1: "85% (Accuracy)",
+    col2: "4.2 (Avg Score)"
+  },
+  charts: [
+    {
+      id: "dist_1",
+      title: "Primary Variable Distribution",
+      desc: "Frequency distribution of the main dataset column",
+      type: "bar",
+      data: [
+        { name: 'Category A', value: 450 },
+        { name: 'Category B', value: 320 },
+        { name: 'Category C', value: 210 },
+        { name: 'Category D', value: 180 },
+        { name: 'Category E', value: 340 },
+      ],
+      xKey: "name",
+      yKey: "value",
+      fill: "#8b5cf6",
+      insightTitle: "Distribution Analysis",
+      insightText: "Category A appears most frequently (30%), suggesting it is the dominant mode in this dataset.",
+      deepInsightTitle: "Statistical Significance",
+      deepInsightText: "The variance between categories exceeds random chance (p < 0.05), indicating structural differences in the data generation process."
+    },
+    {
+      id: "trend_1",
+      title: "Time Series / Sequence",
+      desc: "Data progression over the index",
+      type: "bar",
+      data: [
+        { name: 'Q1', value: 120 },
+        { name: 'Q2', value: 145 },
+        { name: 'Q3', value: 190 },
+        { name: 'Q4', value: 220 },
+      ],
+      xKey: "name",
+      yKey: "value",
+      fill: "#ec4899",
+      insightTitle: "Trend Analysis",
+      insightText: "There is a clear upward trend observed across the quartiles, with Q4 showing an 83% increase over Q1.",
+    },
+    {
+      id: "composition",
+      title: "Data Composition",
+      desc: "Part-to-whole relationship",
+      type: "pie",
+      data: [
+        { name: 'Segment 1', value: 40 },
+        { name: 'Segment 2', value: 35 },
+        { name: 'Segment 3', value: 25 },
+      ],
+      insightTitle: "Composition",
+      insightText: "The dataset is fairly balanced, with no single segment controlling the majority (>50%) of the share."
+    }
+  ],
+  conclusion: "This custom dataset reveals interesting structural patterns. The primary variable shows significant modal clustering, while the secondary sequential data indicates positive momentum."
+};
+
 export const REPORT_DATA: Record<string, any> = {
   "rep_123": DATA_SALES,
   "rep_456": DATA_HOUSING,
@@ -256,7 +318,7 @@ export const REPORT_DATA: Record<string, any> = {
 };
 
 // Default fallback for new reports
-export const DEFAULT_REPORT_DATA = DATA_TITANIC;
+export const DEFAULT_REPORT_DATA = DATA_GENERIC;
 
 // Keep these for backward compatibility if needed, or remove
 export const MOCK_DATASET_SUMMARY = DATA_TITANIC.summary;

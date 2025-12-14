@@ -30,10 +30,27 @@ export default function CreateWizard() {
 
   const handleGenerate = () => {
     setLoading(true);
+    
+    // Create a new mock report entry
+    const newReportId = `custom_${Date.now()}`;
+    const newReport = {
+      id: newReportId,
+      title: `${file?.name.replace(".csv", "")} Analysis` || "New Analysis",
+      createdAt: new Date().toISOString().split('T')[0],
+      intent: intent,
+      dataset: file?.name || "data.csv"
+    };
+
+    // Save to local storage to simulate persistence
+    const existing = localStorage.getItem("custom_reports");
+    const reports = existing ? JSON.parse(existing) : [];
+    reports.push(newReport);
+    localStorage.setItem("custom_reports", JSON.stringify(reports));
+
     // Simulate processing
     setTimeout(() => {
       setLoading(false);
-      setLocation("/report/new");
+      setLocation(`/report/${newReportId}`);
     }, 2000);
   };
 
