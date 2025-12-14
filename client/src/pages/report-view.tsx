@@ -18,7 +18,8 @@ import {
   REPORT_DATA, 
   DEFAULT_REPORT_DATA,
   INTENT_MODES,
-  MOCK_REPORTS
+  MOCK_REPORTS,
+  getDatasetForFile
 } from "@/lib/mock-data";
 import { Download, Share2, Info, AlertTriangle, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -51,8 +52,16 @@ export default function ReportView() {
   // Check mock reports first, then custom
   const report = MOCK_REPORTS.find(r => r.id === reportId) || getCustomReport(reportId);
   
-  // Get specific data or fallback to generic
-  const reportData = (reportId && REPORT_DATA[reportId]) ? REPORT_DATA[reportId] : DEFAULT_REPORT_DATA;
+  // Get specific data: 
+  // 1. Check if it's a predefined ID in REPORT_DATA
+  // 2. If it's a custom report, try to detect the type based on filename
+  // 3. Fallback to DEFAULT_REPORT_DATA
+  let reportData = DEFAULT_REPORT_DATA;
+  if (reportId && REPORT_DATA[reportId]) {
+    reportData = REPORT_DATA[reportId];
+  } else if (report) {
+    reportData = getDatasetForFile(report.dataset);
+  }
   
   const currentIntentKey = (report?.intent || "BUSINESS") as IntentMode;
   const currentIntentMode = INTENT_MODES[currentIntentKey];
@@ -70,7 +79,7 @@ export default function ReportView() {
     }, 2000);
   };
 
-  const COLORS = ['#6366f1', '#14b8a6', '#0ea5e9', '#fbbf24', '#f43f5e'];
+  const COLORS = ['#6366f1', '#14b8a6', '#0ea5e9', '#fbbf24', '#f43f5e', '#8b5cf6', '#ec4899', '#10b981'];
 
   const InsightCard = ({ title, children, icon: Icon = Lightbulb }: { title: string, children: React.ReactNode, icon?: any }) => (
     <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">

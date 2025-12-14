@@ -249,6 +249,77 @@ const DATA_HOUSING = {
   conclusion: "The housing market data indicates a strong segmentation by zone. While size is the primary predictor of value, location (Neighborhood) acts as a significant multiplier, especially in the Downtown sector."
 };
 
+const DATA_HEALTHCARE = {
+  summary: {
+    rows: 55502,
+    columns: 15,
+    col1: "42 (Avg Age)",
+    col2: "$25.5k (Avg Bill)"
+  },
+  charts: [
+    {
+      id: "condition_dist",
+      title: "Medical Condition Distribution",
+      desc: "Frequency of primary diagnoses",
+      type: "bar",
+      data: [
+        { name: 'Arthritis', value: 16.5 },
+        { name: 'Diabetes', value: 16.2 },
+        { name: 'Hypertension', value: 16.1 },
+        { name: 'Obesity', value: 16.1 },
+        { name: 'Cancer', value: 16.0 },
+        { name: 'Asthma', value: 15.9 },
+      ],
+      xKey: "name",
+      yKey: "value",
+      fill: "#ef4444",
+      insightTitle: "Condition Prevalence",
+      insightText: "Medical conditions are remarkably evenly distributed, with Arthritis slightly leading (16.5%) and Asthma being the least common (15.9%). This suggests a balanced random sampling in the dataset.",
+      deepInsightTitle: "Resource Allocation",
+      deepInsightText: "The uniform distribution implies that hospital resources (specialists, equipment) need to be allocated equally across all major departments rather than focused on a single outbreak or prevalent disease."
+    },
+    {
+      id: "billing_by_insurance",
+      title: "Avg Billing by Insurance",
+      desc: "Cost variation across providers",
+      type: "bar",
+      data: [
+        { name: 'Cigna', value: 25800 },
+        { name: 'Blue Cross', value: 25600 },
+        { name: 'Aetna', value: 25400 },
+        { name: 'UnitedHealthcare', value: 25300 },
+        { name: 'Medicare', value: 25100 },
+      ],
+      xKey: "name",
+      yKey: "value",
+      fill: "#3b82f6",
+      insightTitle: "Cost Analysis",
+      insightText: "Average billing amounts are highly consistent across all insurance providers, hovering around the $25k mark with <3% variance.",
+      deepInsightTitle: "Payer Parity",
+      deepInsightText: "The lack of significant variance suggests standardized pricing models are being applied effectively regardless of the payer, or that the case mix severity is uniform across provider pools."
+    },
+    {
+      id: "blood_type",
+      title: "Blood Type Distribution",
+      desc: "Patient blood group breakdown",
+      type: "pie",
+      data: [
+        { name: 'A+', value: 12.5 },
+        { name: 'A-', value: 12.4 },
+        { name: 'B+', value: 12.6 },
+        { name: 'B-', value: 12.4 },
+        { name: 'AB+', value: 12.5 },
+        { name: 'AB-', value: 12.5 },
+        { name: 'O+', value: 12.6 },
+        { name: 'O-', value: 12.5 },
+      ],
+      insightTitle: "Demographic Insight",
+      insightText: "Blood types are distributed almost perfectly evenly (approx 12.5% each). Note: This deviates from natural human population statistics (where O+ and A+ are usually dominant), indicating this is likely a synthetic or balanced training dataset."
+    }
+  ],
+  conclusion: "The Healthcare dataset demonstrates a highly balanced distribution across almost all categorical variables (Conditions, Blood Types, Insurance). While useful for testing algorithmic bias, the lack of natural skew suggests it may be synthetic data. Key insight: Billing amounts are consistent regardless of insurance provider, indicating a flat-rate or standardized billing model."
+};
+
 export const DATA_GENERIC = {
   summary: {
     rows: 1500,
@@ -319,6 +390,14 @@ export const REPORT_DATA: Record<string, any> = {
 
 // Default fallback for new reports
 export const DEFAULT_REPORT_DATA = DATA_GENERIC;
+
+// Helper function to detect dataset type and return appropriate mock data
+export const getDatasetForFile = (filename: string) => {
+  if (filename.toLowerCase().includes("health") || filename.toLowerCase().includes("hospital")) {
+    return DATA_HEALTHCARE;
+  }
+  return DATA_GENERIC;
+};
 
 // Keep these for backward compatibility if needed, or remove
 export const MOCK_DATASET_SUMMARY = DATA_TITANIC.summary;
