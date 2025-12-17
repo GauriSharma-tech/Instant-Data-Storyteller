@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,9 +18,18 @@ const ICONS = {
 export default function CreateWizard() {
   const [step, setStep] = useState(1);
   const [file, setFile] = useState<File | null>(null);
-  const [intent, setIntent] = useState<string | null>(null);
+  // Check for preselected intent from templates
+  const preselectedIntent = localStorage.getItem("preselectedIntent");
+  const [intent, setIntent] = useState<string | null>(preselectedIntent);
   const [loading, setLoading] = useState(false);
   const [, setLocation] = useLocation();
+
+  // Clear preselected intent after reading it
+  useEffect(() => {
+    if (preselectedIntent) {
+      localStorage.removeItem("preselectedIntent");
+    }
+  }, [preselectedIntent]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

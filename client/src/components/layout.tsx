@@ -43,8 +43,8 @@ export function Layout({ children }: LayoutProps) {
     <div className="flex flex-col h-full bg-sidebar text-sidebar-foreground border-r border-sidebar-border">
       <div className="p-6">
         <h1 className="text-xl font-bold tracking-tight font-serif flex items-center gap-2">
-          <span className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-sans">S</span>
-          Storyteller
+          <span className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-sans text-xs">DS</span>
+          Data Storyteller
         </h1>
       </div>
       
@@ -75,10 +75,16 @@ export function Layout({ children }: LayoutProps) {
             <p className="text-xs text-muted-foreground truncate">Free Plan</p>
           </div>
         </div>
-        <Button variant="outline" className="w-full justify-start gap-2 text-muted-foreground" onClick={logout}>
-          <LogOut className="h-4 w-4" />
-          Sign Out
-        </Button>
+        <Link href="/">
+          <Button
+            variant="outline"
+            className="w-full justify-start gap-2 text-muted-foreground"
+            onClick={logout}
+          >
+            <LogOut className="h-4 w-4" />
+            Sign Out
+          </Button>
+        </Link>
       </div>
     </div>
   );

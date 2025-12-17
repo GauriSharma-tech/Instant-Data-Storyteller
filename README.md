@@ -1,45 +1,107 @@
 # Instant Data Storyteller
 
-This is a complete frontend prototype for the Instant Data Storyteller application.
+Instant Data Storyteller is an AI-assisted data analysis web application that transforms raw CSV datasets into clear, visual, and narrative-driven reports. It is designed to help **students, researchers, and business users** quickly understand data without deep technical expertise.
 
-## Prerequisites
+The project focuses on **automated EDA, visual storytelling, and insight generation**, packaged in a clean, dashboard-style user experience.
 
-- Node.js (v18 or higher)
-- npm or yarn
+---
 
-## Getting Started
+## 🚀 Key Features
 
-1.  **Unzip the project** to your desired location.
-2.  **Open a terminal** in the project directory.
-3.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
-4.  **Start the development server**:
-    ```bash
-    npm run dev:client
-    ```
-5.  **Open your browser** and navigate to:
-    `http://localhost:5000`
+* 📂 **CSV Upload & Analysis**
+  Upload CSV datasets and automatically generate exploratory data analysis.
 
-## Project Structure
+* 📊 **Dynamic Visualizations**
+  Interactive charts and summaries generated based on the uploaded data.
 
-- `client/src/pages`: Main application pages (Landing, Dashboard, Report View).
-- `client/src/components`: Reusable UI components.
-- `client/src/lib/mock-data.ts`: Mock data and simulation logic.
-- `client/src/context`: Authentication state management.
+* 🧠 **AI-Assisted Insights**
+  Automatically generated textual insights and conclusions to explain trends and patterns.
 
-## Features
+* 🧩 **Multiple Report Modes**
 
-- **Authentication**: Login with demo users (`gauri`, `kritika`, `user1`).
-- **Wizard**: Upload CSV and select Intent Mode.
-- **Report View**: Interactive dashboard with charts and dynamic insights.
-- **Modes**: Switch between Student, Business, and Research intents.
+  * **Business Mode** – KPI-focused summaries and executive-style insights
+  * **Research Mode** – Detailed exploration and analytical observations
+  * **Student Mode** – Simplified explanations for learning and assignments
 
-## Tech Stack
+* 📁 **Report Management Dashboard**
+  View, open, and manage previously generated reports in one place.
 
-- React + Vite
-- TailwindCSS
-- Recharts
-- Framer Motion
-- Wouter (Routing)
+* 📄 **Export-Ready Structure**
+  Designed for future export options like PDF and CSV summaries.
+
+---
+
+## 🧠 Templates & Settings (MVP-ready)
+
+* **Templates Page**
+  Predefined report templates (Business, Research, Student) to guide users in creating structured data stories.
+
+* **Settings Page**
+  User preferences such as default report mode, export options (planned), and UI preferences stored locally.
+
+> Note: Templates and settings are implemented as **frontend-ready MVP features** with scope for backend expansion.
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend**
+
+* React
+* Tailwind CSS
+* Chart libraries (Chart.js / Recharts)
+
+**Backend**
+
+* FastAPI
+* Python (Pandas, NumPy)
+
+**Other Tools**
+
+* Git & GitHub
+* Vercel (Frontend deployment – optional)
+* Render / Railway (Backend deployment – optional)
+
+---
+
+## 📌 Project Status
+
+This project is an **MVP (Minimum Viable Product)** built to demonstrate:
+
+* End-to-end data storytelling
+* Clean UI/UX design
+* Scalable architecture for future AI-powered features
+
+Planned future enhancements include:
+
+* Full template-based report generation
+* PDF and CSV export
+* Advanced AI narrative generation
+* User authentication and saved cloud reports
+
+---
+
+## 👩‍💻 Ideal Use Cases
+
+* Students creating assignment-ready data reports
+* Researchers exploring datasets quickly
+* Business users generating executive summaries
+* Hackathon and portfolio demonstrations
+
+---
+
+## 📷 Screenshots
+
+*(Add screenshots of the dashboard, report view, and templates page here)*
+
+---
+
+## 📄 License
+
+This project is created for educational and demonstration purposes.
+
+---
+
+## 🙌 Acknowledgements
+
+Built as part of a learning-focused and hackathon-oriented project to explore the intersection of **data analysis, AI, and storytelling**.

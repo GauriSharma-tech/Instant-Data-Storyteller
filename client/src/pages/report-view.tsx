@@ -1,8 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -10,16 +16,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend
-} from 'recharts';
-import { 
-  REPORT_DATA, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
+import {
+  REPORT_DATA,
   DEFAULT_REPORT_DATA,
   INTENT_MODES,
   MOCK_REPORTS,
-  getDatasetForFile
+  getDatasetForFile,
 } from "@/lib/mock-data";
 import { Download, Share2, Info, AlertTriangle, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -50,9 +65,10 @@ export default function ReportView() {
 
   const reportId = params?.id;
   // Check mock reports first, then custom
-  const report = MOCK_REPORTS.find(r => r.id === reportId) || getCustomReport(reportId);
-  
-  // Get specific data: 
+  const report =
+    MOCK_REPORTS.find((r) => r.id === reportId) || getCustomReport(reportId);
+
+  // Get specific data:
   // 1. Check if it's a predefined ID in REPORT_DATA
   // 2. If it's a custom report, try to detect the type based on filename
   // 3. Fallback to DEFAULT_REPORT_DATA
@@ -62,34 +78,43 @@ export default function ReportView() {
   } else if (report) {
     reportData = getDatasetForFile(report.dataset);
   }
-  
+
   const currentIntentKey = (report?.intent || "BUSINESS") as IntentMode;
   const currentIntentMode = INTENT_MODES[currentIntentKey];
 
   const handleExport = () => {
     toast({
-      title: "Export Started",
-      description: "Generating PDF report...",
+      title: "Export Feature",
+      description: "PDF export will be available in a future update.",
     });
-    setTimeout(() => {
-      toast({
-        title: "Download Ready",
-        description: `Report_${report?.title || "Analysis"}.pdf has been downloaded.`,
-      });
-    }, 2000);
   };
 
-  const COLORS = ['#6366f1', '#14b8a6', '#0ea5e9', '#fbbf24', '#f43f5e', '#8b5cf6', '#ec4899', '#10b981'];
+  const COLORS = [
+    "#6366f1",
+    "#14b8a6",
+    "#0ea5e9",
+    "#fbbf24",
+    "#f43f5e",
+    "#8b5cf6",
+    "#ec4899",
+    "#10b981",
+  ];
 
-  const InsightCard = ({ title, children, icon: Icon = Lightbulb }: { title: string, children: React.ReactNode, icon?: any }) => (
+  const InsightCard = ({
+    title,
+    children,
+    icon: Icon = Lightbulb,
+  }: {
+    title: string;
+    children: React.ReactNode;
+    icon?: any;
+  }) => (
     <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
       <div className="flex items-center gap-2 mb-2 text-primary font-semibold">
         <Icon className="h-4 w-4" />
         <span className="text-sm uppercase tracking-wide">{title}</span>
       </div>
-      <p className="text-slate-700 leading-relaxed text-sm">
-        {children}
-      </p>
+      <p className="text-slate-700 leading-relaxed text-sm">{children}</p>
     </div>
   );
 
@@ -99,17 +124,28 @@ export default function ReportView() {
       const isVertical = chart.type === "bar_vertical";
       return (
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart 
-            data={chart.data} 
+          <BarChart
+            data={chart.data}
             layout={isVertical ? "vertical" : "horizontal"}
             margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" horizontal={!isVertical} vertical={isVertical} stroke="#e2e8f0" />
-            
+            <CartesianGrid
+              strokeDasharray="3 3"
+              horizontal={!isVertical}
+              vertical={isVertical}
+              stroke="#e2e8f0"
+            />
+
             {isVertical ? (
               <>
                 <XAxis type="number" stroke="#64748b" fontSize={12} />
-                <YAxis dataKey={chart.yKey} type="category" stroke="#64748b" fontSize={12} width={80} />
+                <YAxis
+                  dataKey={chart.yKey}
+                  type="category"
+                  stroke="#64748b"
+                  fontSize={12}
+                  width={80}
+                />
               </>
             ) : (
               <>
@@ -118,21 +154,25 @@ export default function ReportView() {
               </>
             )}
 
-            <Tooltip 
-              contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-              cursor={{fill: '#f1f5f9'}}
+            <Tooltip
+              contentStyle={{
+                borderRadius: "8px",
+                border: "none",
+                boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+              }}
+              cursor={{ fill: "#f1f5f9" }}
             />
-            <Bar 
-              dataKey={isVertical ? chart.xKey : chart.yKey} 
-              fill={chart.fill || "#6366f1"} 
-              radius={isVertical ? [0, 4, 4, 0] : [4, 4, 0, 0]} 
-              barSize={32} 
+            <Bar
+              dataKey={isVertical ? chart.xKey : chart.yKey}
+              fill={chart.fill || "#6366f1"}
+              radius={isVertical ? [0, 4, 4, 0] : [4, 4, 0, 0]}
+              barSize={32}
             />
           </BarChart>
         </ResponsiveContainer>
       );
-    } 
-    
+    }
+
     if (chart.type === "pie") {
       return (
         <ResponsiveContainer width="100%" height="100%">
@@ -147,7 +187,10 @@ export default function ReportView() {
               dataKey="value"
             >
               {chart.data.map((entry: any, index: number) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
               ))}
             </Pie>
             <Tooltip />
@@ -165,23 +208,35 @@ export default function ReportView() {
       {/* Top Bar - Report Controls */}
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b pb-4 mb-8 -mx-4 px-4 md:-mx-8 md:px-8 pt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-           <div className="flex items-center gap-3 mb-1">
-             <h1 className="text-2xl font-bold font-serif text-slate-900">{report?.title || "New Data Analysis"}</h1>
-             <Badge variant="secondary" className="font-mono text-xs">v1.0</Badge>
-           </div>
-           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-             <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20">
-               {currentIntentMode.label} Mode
-             </Badge>
-             <span>•</span>
-             <span>Generated {report?.createdAt || "just now"}</span>
-           </div>
+          <div className="flex items-center gap-3 mb-1">
+            <h1 className="text-2xl font-bold font-serif text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.6)]">
+              {report?.title || "New Data Analysis"}
+            </h1>
+            <Badge variant="secondary" className="font-mono text-xs">
+              v1.0
+            </Badge>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Badge
+              variant="outline"
+              className="bg-primary/5 text-primary border-primary/20"
+            >
+              {currentIntentMode.label} Mode
+            </Badge>
+            <span>•</span>
+            <span>Generated {report?.createdAt || "just now"}</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 mr-4">
-            <span className="text-sm font-medium text-muted-foreground hidden sm:inline-block">Detail Level:</span>
-            <Select value={detailMode} onValueChange={(v: DetailMode) => setDetailMode(v)}>
+            <span className="text-sm font-medium text-muted-foreground hidden sm:inline-block">
+              Detail Level:
+            </span>
+            <Select
+              value={detailMode}
+              onValueChange={(v: DetailMode) => setDetailMode(v)}
+            >
               <SelectTrigger className="w-[140px] h-9">
                 <SelectValue />
               </SelectTrigger>
@@ -207,9 +262,15 @@ export default function ReportView() {
         {/* Navigation Sidebar (Desktop) */}
         <div className="hidden lg:block col-span-2 sticky top-32 h-[calc(100vh-8rem)]">
           <nav className="space-y-1">
-            {["Overview", "Distributions", "Relationships", "Key Findings", "Conclusion"].map((item) => (
-              <a 
-                key={item} 
+            {[
+              "Overview",
+              "Distributions",
+              "Relationships",
+              "Key Findings",
+              "Conclusion",
+            ].map((item) => (
+              <a
+                key={item}
                 href={`#${item.toLowerCase()}`}
                 className="block px-3 py-2 text-sm font-medium text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md transition-colors"
               >
@@ -221,53 +282,130 @@ export default function ReportView() {
 
         {/* Main Content Area */}
         <div className="col-span-12 lg:col-span-10 space-y-8">
-          
           {/* Section 1: Overview */}
           <section id="overview" className="space-y-4">
-            <h2 className="text-xl font-bold font-serif border-l-4 border-primary pl-4">Dataset Overview</h2>
+            <h2 className="text-xl font-bold font-serif border-l-4 border-primary pl-4">
+              Dataset Overview
+            </h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-               <Card>
-                 <CardContent className="pt-6">
-                   <div className="text-2xl font-bold font-mono text-primary">{reportData.summary.rows}</div>
-                   <p className="text-xs text-muted-foreground uppercase font-semibold mt-1">Total Rows</p>
-                 </CardContent>
-               </Card>
-               <Card>
-                 <CardContent className="pt-6">
-                   <div className="text-2xl font-bold font-mono text-primary">{reportData.summary.columns}</div>
-                   <p className="text-xs text-muted-foreground uppercase font-semibold mt-1">Columns</p>
-                 </CardContent>
-               </Card>
-               <Card>
-                 <CardContent className="pt-6">
-                   <div className="text-2xl font-bold font-mono text-primary">{reportData.summary.col1}</div>
-                   <p className="text-xs text-muted-foreground uppercase font-semibold mt-1">Metric 1</p>
-                 </CardContent>
-               </Card>
-               <Card>
-                 <CardContent className="pt-6">
-                   <div className="text-2xl font-bold font-mono text-primary">{reportData.summary.col2}</div>
-                   <p className="text-xs text-muted-foreground uppercase font-semibold mt-1">Metric 2</p>
-                 </CardContent>
-               </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-2xl font-bold font-mono text-primary">
+                    {reportData.summary.rows}
+                  </div>
+                  <p className="text-xs text-muted-foreground uppercase font-semibold mt-1">
+                    Total Rows
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-2xl font-bold font-mono text-primary">
+                    {reportData.summary.columns}
+                  </div>
+                  <p className="text-xs text-muted-foreground uppercase font-semibold mt-1">
+                    Columns
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-2xl font-bold font-mono text-primary">
+                    {reportData.summary.col1}
+                  </div>
+                  <p className="text-xs text-muted-foreground uppercase font-semibold mt-1">
+                    Metric 1
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-2xl font-bold font-mono text-primary">
+                    {reportData.summary.col2}
+                  </div>
+                  <p className="text-xs text-muted-foreground uppercase font-semibold mt-1">
+                    Metric 2
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </section>
 
-          {detailMode !== "TEXT" && (
+          {detailMode === "TEXT" ? (
+            <>
+              {/* Text-Only Mode: Show insights without charts */}
+              <section id="distributions" className="space-y-6">
+                <h2 className="text-xl font-bold font-serif border-l-4 border-primary pl-4">
+                  Key Insights & Analysis
+                </h2>
+                <div className="space-y-4">
+                  {reportData.charts.map((chart: any, index: number) => (
+                    <Card
+                      key={chart.id}
+                      className="overflow-hidden border-slate-200"
+                    >
+                      <CardHeader className="bg-slate-50/50 pb-4 border-b">
+                        <CardTitle className="text-base font-medium">
+                          {chart.title}
+                        </CardTitle>
+                        <CardDescription>{chart.desc}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <div className="space-y-3">
+                          <InsightCard
+                            title={chart.insightTitle || "Insight"}
+                            icon={Info}
+                          >
+                            {chart.insightText}
+                          </InsightCard>
+                          {chart.deepInsightText && (
+                            <InsightCard
+                              title={chart.deepInsightTitle || "Deep Dive"}
+                              icon={AlertTriangle}
+                            >
+                              {chart.deepInsightText}
+                            </InsightCard>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </section>
+            </>
+          ) : (
             <>
               {/* Dynamic Charts Section */}
               <section id="distributions" className="space-y-6">
-                <h2 className="text-xl font-bold font-serif border-l-4 border-primary pl-4">Analysis & Visuals</h2>
-                
+                <h2 className="text-xl font-bold font-serif border-l-4 border-primary pl-4">
+                  {detailMode === "QUICK" 
+                    ? "Quick Overview - Key Visuals" 
+                    : "Comprehensive Analysis & Visuals"}
+                </h2>
+                {detailMode === "QUICK" && (
+                  <div className="bg-yellow-400/10 border border-yellow-400/20 rounded-lg p-4 mb-4">
+                    <p className="text-sm text-yellow-300 flex items-center gap-2">
+                      <Info className="h-4 w-4" />
+                      Quick Story mode: Showing top insights only. Switch to Analyst Mode for full analysis.
+                    </p>
+                  </div>
+                )}
+
                 <div className="grid md:grid-cols-2 gap-6">
                   {reportData.charts.map((chart: any, index: number) => {
-                    // In Quick mode, only show first 2 charts
+                    // In Quick mode, only show first 2 charts with basic insights
                     if (detailMode === "QUICK" && index > 1) return null;
+                    // In Analyst mode, show all charts
 
                     return (
-                      <Card key={chart.id} className="overflow-hidden border-slate-200">
+                      <Card
+                        key={chart.id}
+                        className="overflow-hidden border-slate-200"
+                      >
                         <CardHeader className="bg-slate-50/50 pb-4 border-b">
-                          <CardTitle className="text-base font-medium">{chart.title}</CardTitle>
+                          <CardTitle className="text-base font-medium">
+                            {chart.title}
+                          </CardTitle>
                           <CardDescription>{chart.desc}</CardDescription>
                         </CardHeader>
                         <CardContent className="pt-6">
@@ -276,14 +414,21 @@ export default function ReportView() {
                           </div>
 
                           <div className="space-y-3">
-                            <InsightCard title={chart.insightTitle || "Insight"} icon={Info}>
-                               {chart.insightText}
+                            <InsightCard
+                              title={chart.insightTitle || "Insight"}
+                              icon={Info}
+                            >
+                              {chart.insightText}
                             </InsightCard>
-                            {detailMode === "ANALYST" && chart.deepInsightText && (
-                               <InsightCard title={chart.deepInsightTitle || "Deep Dive"} icon={AlertTriangle}>
-                                 {chart.deepInsightText}
-                               </InsightCard>
-                            )}
+                            {detailMode === "ANALYST" &&
+                              chart.deepInsightText && (
+                                <InsightCard
+                                  title={chart.deepInsightTitle || "Deep Dive"}
+                                  icon={AlertTriangle}
+                                >
+                                  {chart.deepInsightText}
+                                </InsightCard>
+                              )}
                           </div>
                         </CardContent>
                       </Card>
@@ -295,18 +440,34 @@ export default function ReportView() {
           )}
 
           {/* Section 4: Conclusion (Text Heavy) */}
-          <section id="conclusion" className="bg-primary/5 rounded-2xl p-8 border border-primary/10">
+          <section
+            id="conclusion"
+            className="bg-primary/5 rounded-2xl p-8 border border-primary/10"
+          >
             <h2 className="text-2xl font-bold font-serif text-primary mb-4 flex items-center gap-2">
               <Lightbulb className="h-6 w-6" />
-              Strategic Conclusion
+              {detailMode === "QUICK" 
+                ? "Quick Summary" 
+                : detailMode === "TEXT" 
+                ? "Executive Summary" 
+                : "Strategic Conclusion"}
             </h2>
             <div className="prose prose-slate max-w-none">
-              <p className="text-lg leading-relaxed text-slate-800 font-medium">
+              <p className="text-lg leading-relaxed text-white font-medium">
                 {reportData.conclusion}
               </p>
+              {detailMode === "QUICK" && (
+                <p className="text-sm text-muted-foreground mt-4 italic">
+                  💡 For deeper insights and additional visualizations, switch to Analyst Mode.
+                </p>
+              )}
+              {detailMode === "TEXT" && (
+                <p className="text-sm text-muted-foreground mt-4 italic">
+                  💡 Switch to Quick Story or Analyst Mode to view interactive charts and visualizations.
+                </p>
+              )}
             </div>
           </section>
-
         </div>
       </div>
     </Layout>

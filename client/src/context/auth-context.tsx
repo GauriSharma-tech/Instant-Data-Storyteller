@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { DEMO_USERS } from "@/lib/mock-data";
 import { useToast } from "@/hooks/use-toast";
 
 interface AuthContextType {
@@ -16,20 +15,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
   const login = (username: string) => {
-    if (DEMO_USERS.includes(username)) {
-      setUser(username);
-      toast({
-        title: "Welcome back!",
-        description: `Logged in as ${username}`,
-      });
-      return true;
-    }
+    // Allow any username (including numbers) to sign in for now.
+    setUser(username);
     toast({
-      variant: "destructive",
-      title: "Access Denied",
-      description: "That username is not in the demo list.",
+      title: "Welcome!",
+      description: `Logged in as ${username}`,
     });
-    return false;
+    return true;
   };
 
   const logout = () => {
