@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 type Theme = "dark" | "light";
 
@@ -10,6 +16,9 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
+  // Track whether a theme was loaded from storage or explicitly changed by user
+  const persistRef = { current: false } as { current: boolean };
+
   const [theme, setThemeState] = useState<Theme>(() => {
     // Check localStorage first
     const savedSettings = localStorage.getItem("app_settings");
@@ -21,13 +30,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
           const root = document.documentElement;
           root.classList.remove("dark", "light");
           root.classList.add(parsed.theme);
+          // mark that we should persist updates (user previously saved a choice)
+          persistRef.current = true;
           return parsed.theme;
         }
       } catch (e) {
         console.error("Failed to parse settings", e);
       }
     }
-    // Default to dark and apply it
+    // Default to dark and apply it, but do NOT persist until user explicitly changes
     const root = document.documentElement;
     root.classList.remove("dark", "light");
     root.classList.add("dark");
@@ -36,30 +47,33 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    
+
     // Remove both classes first
     root.classList.remove("dark", "light");
-    
+
     // Add the current theme class
     root.classList.add(theme);
-    
-    // Update localStorage
-    const savedSettings = localStorage.getItem("app_settings");
-    if (savedSettings) {
-      try {
-        const parsed = JSON.parse(savedSettings);
-        parsed.theme = theme;
-        localStorage.setItem("app_settings", JSON.stringify(parsed));
-      } catch (e) {
-        console.error("Failed to update settings", e);
+
+    // Only update localStorage if a theme was previously saved or user toggled explicitly
+    if (persistRef.current) {
+      const savedSettings = localStorage.getItem("app_settings");
+      if (savedSettings) {
+        try {
+          const parsed = JSON.parse(savedSettings);
+          parsed.theme = theme;
+          localStorage.setItem("app_settings", JSON.stringify(parsed));
+        } catch (e) {
+          console.error("Failed to update settings", e);
+        }
+      } else {
+        localStorage.setItem("app_settings", JSON.stringify({ theme }));
       }
-    } else {
-      // Create settings if they don't exist
-      localStorage.setItem("app_settings", JSON.stringify({ theme }));
     }
   }, [theme]);
 
   const setTheme = (newTheme: Theme) => {
+    // Mark that user explicitly changed theme so future changes are persisted
+    persistRef.current = true;
     setThemeState(newTheme);
   };
 
@@ -77,4 +91,3 @@ export function useTheme() {
   }
   return context;
 }
-

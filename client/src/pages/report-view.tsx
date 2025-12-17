@@ -212,9 +212,6 @@ export default function ReportView() {
             <h1 className="text-2xl font-bold font-serif text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.6)]">
               {report?.title || "New Data Analysis"}
             </h1>
-            <Badge variant="secondary" className="font-mono text-xs">
-              v1.0
-            </Badge>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Badge
@@ -223,8 +220,6 @@ export default function ReportView() {
             >
               {currentIntentMode.label} Mode
             </Badge>
-            <span>•</span>
-            <span>Generated {report?.createdAt || "just now"}</span>
           </div>
         </div>
 
@@ -378,15 +373,16 @@ export default function ReportView() {
               {/* Dynamic Charts Section */}
               <section id="distributions" className="space-y-6">
                 <h2 className="text-xl font-bold font-serif border-l-4 border-primary pl-4">
-                  {detailMode === "QUICK" 
-                    ? "Quick Overview - Key Visuals" 
+                  {detailMode === "QUICK"
+                    ? "Quick Overview - Key Visuals"
                     : "Comprehensive Analysis & Visuals"}
                 </h2>
                 {detailMode === "QUICK" && (
                   <div className="bg-yellow-400/10 border border-yellow-400/20 rounded-lg p-4 mb-4">
                     <p className="text-sm text-yellow-300 flex items-center gap-2">
                       <Info className="h-4 w-4" />
-                      Quick Story mode: Showing top insights only. Switch to Analyst Mode for full analysis.
+                      Quick Story mode: Showing top insights only. Switch to
+                      Analyst Mode for full analysis.
                     </p>
                   </div>
                 )}
@@ -446,24 +442,26 @@ export default function ReportView() {
           >
             <h2 className="text-2xl font-bold font-serif text-primary mb-4 flex items-center gap-2">
               <Lightbulb className="h-6 w-6" />
-              {detailMode === "QUICK" 
-                ? "Quick Summary" 
-                : detailMode === "TEXT" 
-                ? "Executive Summary" 
+              {detailMode === "QUICK"
+                ? "Quick Summary"
+                : detailMode === "TEXT"
+                ? "Executive Summary"
                 : "Strategic Conclusion"}
             </h2>
             <div className="prose prose-slate max-w-none">
-              <p className="text-lg leading-relaxed text-white font-medium">
+              <p className="text-xl md:text-2xl leading-relaxed md:leading-tight text-white font-semibold">
                 {reportData.conclusion}
               </p>
               {detailMode === "QUICK" && (
                 <p className="text-sm text-muted-foreground mt-4 italic">
-                  💡 For deeper insights and additional visualizations, switch to Analyst Mode.
+                  💡 For deeper insights and additional visualizations, switch
+                  to Analyst Mode.
                 </p>
               )}
               {detailMode === "TEXT" && (
                 <p className="text-sm text-muted-foreground mt-4 italic">
-                  💡 Switch to Quick Story or Analyst Mode to view interactive charts and visualizations.
+                  💡 Switch to Quick Story or Analyst Mode to view interactive
+                  charts and visualizations.
                 </p>
               )}
             </div>
